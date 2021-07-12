@@ -14,7 +14,11 @@ int main(int argc, char** argv) {
         spdlog::error("GLFW: could not be initialized");
         std::exit(1);
     }
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
     spdlog::info("GLFW: initialized");
+
+
     
     GLFWwindow* window = glfwCreateWindow(1000, 1000, "Test", nullptr, nullptr);
     if(!window) {
