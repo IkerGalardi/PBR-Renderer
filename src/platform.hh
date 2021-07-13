@@ -3,19 +3,19 @@
 #include <string>
 #include <functional>
 
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 
 class platform {
 public:
-    void create_window(unsigned int width, unsigned int height, const std::string& title);
+    SDL_Window* create_window(unsigned int width, unsigned int height, const std::string& title);
 
-    void loop(std::function<void(void)> loop_function);
+    void loop(std::function<void(SDL_Event)> loop_function);
 
     static platform& get();
 private:
     platform();
     ~platform();
 
-    GLFWwindow* window;
+    SDL_Window* window;
 protected:
 };

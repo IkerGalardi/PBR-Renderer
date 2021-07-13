@@ -1,6 +1,6 @@
 #include "platform.hh"
 
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 #include <spdlog/spdlog.h>
 
 platform::platform() {
@@ -9,32 +9,34 @@ platform::platform() {
 
     spdlog::info("Logging prepared.");
 
-    if(!glfwInit()) {
-        spdlog::error("GLFW: could not be initialized");
+    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        /// TODO: show detailed error message
+        spdlog::error("SDL: could not be initialized");
         std::exit(1);
     }
-    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    spdlog::info("GLFW: initialized");
+    spdlog::info("SDL: initialized");
 }
 
 platform::~platform() {
-    glfwDestroyWindow(window);
+    SDL_DestroyWindow(window);
 }
 
 
-void platform::create_window(unsigned int width, unsigned int height, const std::string& title) {
-    this->window = glfwCreateWindow(width, height, title.c_str(), NULL, NULL);
+SDL_Window* platform::create_window(unsigned int width, unsigned int height, const std::string& title) {
+    this->window = SDL_CreateWindow("Vulkan Engine",
+		                            SDL_WINDOWPOS_UNDEFINED,
+		                            SDL_WINDOWPOS_UNDEFINED,
+		                            width,
+		                            height,
+		                            SDL_WINDOW_VULKAN);
 
-    spdlog::info("GLFW: created window of size {}x{} and title \"{}\"", width, height, title);
+    spdlog::info("SDL: created window of size {}x{} and title \"{}\"", width, height, title);
+
+    return window;
 }
 
-void platform::loop(std::function<void(void)> loop_function) {
-    while(!glfwWindowShouldClose(this->window)) {
-        loop_function();
-
-        glfwPollEvents();
-    }
+void platform::loop(std::function<void(SDL_Event)> loop_function) {
+    while(true);
 }
 
 platform& platform::get() {

@@ -12,11 +12,11 @@ project "pbr"
     targetdir("bin/")
     objdir("bin/obj/")
 
-    files {"src/**.cc", "src/**.hh"}
+    files {"src/**.cc", "src/**.hh", "lib/include/vkbootstrap/**.h", "lib/include/vkbootstrap/**.cpp"}
     includedirs {"lib/include", "src"}
 
     libdirs {"lib/bin"}
-    links {"spdlog", "pthread", "glfw", "vulkan"}
+    links {"spdlog", "pthread", "SDL2", "SDLmain", "vulkan", "dl"}
 
     defines { "SPDLOG_COMPILED_LIB" }
 
