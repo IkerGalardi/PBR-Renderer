@@ -9,7 +9,7 @@ class platform {
 public:
     SDL_Window* create_window(unsigned int width, unsigned int height, const std::string& title);
 
-    void loop(std::function<void(SDL_Event)> loop_function);
+    void loop(std::function<bool(SDL_Event&)> loop_function);
 
     static platform& get();
 private:

@@ -27,9 +27,13 @@ int main(int argc, char** argv) {
     VkInstance instance = vkb_inst.instance;
     VkDebugUtilsMessengerEXT debug_messenger = vkb_inst.debug_messenger;
 
+    spdlog::info("Vulkan: instance and debug messager created");
+
     // Create surface
     VkSurfaceKHR surface;
     SDL_Vulkan_CreateSurface(window, instance, &surface);
+
+    spdlog::info("SDL: created vulkan surface");
 
     //use vkbootstrap to select a GPU.
     //We want a GPU that can write to the SDL surface and supports Vulkan 1.1
@@ -48,6 +52,8 @@ int main(int argc, char** argv) {
     // Get the VkDevice handle used in the rest of a Vulkan application
     VkDevice device = vkbDevice.device;
     VkPhysicalDevice physical_device = physicalDevice.physical_device;
+
+    spdlog::info("Vulkan: created logical and physical devices");
 
     VkSwapchainKHR swapchain;
     VkFormat image_format;
@@ -69,8 +75,17 @@ int main(int argc, char** argv) {
 	swapchain_views = vkbSwapchain.get_image_views().value();
 	image_format = vkbSwapchain.image_format;
 
-    platform::get().loop([&](SDL_Event event) {
-        
+    spdlog::info("Vulkan: created swapchain and views");
+
+    platform::get().loop([&](SDL_Event& event) {
+        if(SDL_PollEvent(&event)) {
+            if(event.type == SDL_QUIT) {
+                spdlog::info("SDL: quit event arrived");
+                return true;
+            }
+        }
+
+        return false;
     });
 
     // Cleanup
@@ -78,9 +93,20 @@ int main(int argc, char** argv) {
     for(auto& view : swapchain_views) {
         vkDestroyImageView(device, view, nullptr);
     }
+    spdlog::info("Vulkan: swapchain destroyed");
+    
     vkDestroyDevice(device, nullptr);
+    spdlog::info("Vulkan: device destroyed");
+
     vkDestroySurfaceKHR(instance, surface, nullptr);
+    spdlog::info("Vulkan: surface destroyed");
+
     vkb::destroy_debug_utils_messenger(instance, debug_messenger);
+    spdlog::info("Vulkan: debug messager destroyed");
+
     vkDestroyInstance(instance, nullptr);
+    spdlog::info("Vulkan: destroyed instance");
+
     SDL_DestroyWindow(window);
+    spdlog::info("SDL: window destroyed");
 }

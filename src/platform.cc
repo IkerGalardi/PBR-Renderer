@@ -35,8 +35,13 @@ SDL_Window* platform::create_window(unsigned int width, unsigned int height, con
     return window;
 }
 
-void platform::loop(std::function<void(SDL_Event)> loop_function) {
-    while(true);
+void platform::loop(std::function<bool(SDL_Event&)> loop_function) {
+    SDL_Event event;
+    while(true) {
+        if(loop_function(event)) {
+            break;
+        }
+    }
 }
 
 platform& platform::get() {
