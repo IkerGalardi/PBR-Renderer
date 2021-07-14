@@ -77,6 +77,28 @@ int main(int argc, char** argv) {
 
     spdlog::info("Vulkan: created swapchain and views");
 
+    VkQueue graphics_queue = vkbDevice.get_queue(vkb::QueueType::graphics).value();
+    unsigned int graphics_queue_index = vkbDevice.get_queue_index(vkb::QueueType::graphics).value();
+
+    // Create graphics command pool
+    VkCommandPoolCreateInfo pool_create_info = {};
+    pool_create_info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    pool_create_info.pNext = nullptr;
+    pool_create_info.queueFamilyIndex = graphics_queue_index;
+    pool_create_info.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    VkCommandPool graphics_command_pool;
+    vkCreateCommandPool(device, &pool_create_info, nullptr, &graphics_command_pool);
+    spdlog::info("Vulkan: created graphics command pool");
+
+    VkCommandBufferAllocateInfo command_buffer_info = {};
+    command_buffer_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    command_buffer_info.pNext = nullptr;
+    command_buffer_info.commandPool = graphics_command_pool;
+    command_buffer_info.commandBufferCount = 1;
+    command_buffer_info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    VkCommandBuffer command_buffer;
+    vkAllocateCommandBuffers(device, &command_buffer_info, &command_buffer);
+
     platform::get().loop([&](SDL_Event& event) {
         if(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT) {
@@ -94,6 +116,9 @@ int main(int argc, char** argv) {
         vkDestroyImageView(device, view, nullptr);
     }
     spdlog::info("Vulkan: swapchain destroyed");
+
+    vkDestroyCommandPool(device, graphics_command_pool, nullptr);
+    spdlog::info("Vulkan: graphics command pool destroyed");
     
     vkDestroyDevice(device, nullptr);
     spdlog::info("Vulkan: device destroyed");
