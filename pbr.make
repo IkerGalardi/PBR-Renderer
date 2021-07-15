@@ -63,9 +63,11 @@ OBJECTS :=
 GENERATED += $(OBJDIR)/VkBootstrap.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/platform.o
+GENERATED += $(OBJDIR)/renderer.o
 OBJECTS += $(OBJDIR)/VkBootstrap.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/platform.o
+OBJECTS += $(OBJDIR)/renderer.o
 
 # Rules
 # #############################################
@@ -136,6 +138,9 @@ $(OBJDIR)/main.o: src/main.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/platform.o: src/platform.cc
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/renderer.o: src/renderer/renderer.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 
