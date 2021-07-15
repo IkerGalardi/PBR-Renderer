@@ -26,7 +26,7 @@ INCLUDES += -Ilib/include -Isrc
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS += -lspdlog -lpthread -lSDL2 -lSDLmain -lvulkan -ldl
+LIBS += -lspdlog -lpthread -lSDL2 -lSDL2main -lvulkan -ldl
 LDDEPS +=
 LINKCMD = $(CXX) -o "$@" $(OBJECTS) $(RESOURCES) $(ALL_LDFLAGS) $(LIBS)
 define PREBUILDCMDS
