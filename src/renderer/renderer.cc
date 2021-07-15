@@ -191,12 +191,18 @@ namespace renderer {
         // Wait for render to finish
         vkWaitForFences(device, 1, &fence, true, 10000);
         vkResetFences(device, 1, &fence);
-
-        unsigned int next_image_index;
-        vkAcquireNextImageKHR(device, swapchain, 10000, present_semaphore, fence, &next_image_index);
+        spdlog::trace("Renderer: waited to fence");
 
         // Reset the command buffer to start using it
         vkResetCommandBuffer(graphics_command_buffer, 0);
+        spdlog::trace("Renderer: command buffer reset");
+
+        unsigned int next_image_index;
+        vkAcquireNextImageKHR(device, swapchain, 10000, present_semaphore, fence, &next_image_index);
+        spdlog::trace("Renderer: swapchain image acquired");
+
+        vkWaitForFences(device, 1, &fence, true, 10000);
+        vkResetFences(device, 1, &fence);
 
         VkCommandBufferBeginInfo command_buffer_begin_info = {};
         command_buffer_begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -204,6 +210,9 @@ namespace renderer {
         command_buffer_begin_info.pInheritanceInfo = nullptr;
         command_buffer_begin_info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
         vkBeginCommandBuffer(graphics_command_buffer, &command_buffer_begin_info);
+
+        spdlog::trace("Renderer: command buffer started recording");
+
 
         // Set the clear color
         VkClearValue clear_value;
@@ -219,8 +228,40 @@ namespace renderer {
         pass_begin_info.clearValueCount = 1;
         pass_begin_info.pClearValues = &clear_value;
         vkCmdBeginRenderPass(graphics_command_buffer, &pass_begin_info, VK_SUBPASS_CONTENTS_INLINE);
+        spdlog::trace("Renderer: render pass started");
         vkCmdEndRenderPass(graphics_command_buffer);
+        spdlog::trace("Renderer: render pass ended");
         vkEndCommandBuffer(graphics_command_buffer);
+        spdlog::trace("Renderer: command buffer recording ended");
+
+        VkSubmitInfo submit = {};
+        submit.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submit.pNext = nullptr;
+
+        VkPipelineStageFlags wait_stage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        submit.pWaitDstStageMask = &wait_stage;
+        submit.waitSemaphoreCount = 1;
+        submit.pWaitSemaphores = &present_semaphore;
+        submit.signalSemaphoreCount = 1;
+        submit.pSignalSemaphores = &render_semaphore;
+        submit.commandBufferCount = 1;
+        submit.pCommandBuffers = &graphics_command_buffer;
+        vkQueueSubmit(graphics_command_queue, 1, &submit, fence);
+        spdlog::trace("Renderer: command stream submited");
+
+        vkWaitForFences(device, 1, &fence, true, 10000);
+        vkResetFences(device, 1, &fence);
+
+        VkPresentInfoKHR presentInfo = {};
+        presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+        presentInfo.pNext = nullptr;
+        presentInfo.pSwapchains = &swapchain;
+        presentInfo.swapchainCount = 1;
+        presentInfo.pWaitSemaphores = &render_semaphore;
+        presentInfo.waitSemaphoreCount = 1;
+        presentInfo.pImageIndices = &next_image_index;
+        vkQueuePresentKHR(graphics_command_queue, &presentInfo);
+        spdlog::trace("Renderer: presented image");
     }
 
     void destroy() {
