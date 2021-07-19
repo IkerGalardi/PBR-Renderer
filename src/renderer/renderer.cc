@@ -84,6 +84,7 @@ static void initialize_vulkan(SDL_Window* window) {
     swapchain_images = vkbSwapchain.get_images().value();
     swapchain_views = vkbSwapchain.get_image_views().value();
     image_format = vkbSwapchain.image_format;
+    spdlog::info("Renderer: {} images in swapchain", swapchain_images.size());
 
     spdlog::info("Renderer: created swapchain and views");
 
@@ -189,7 +190,7 @@ namespace renderer {
 
     void render() {
         // Wait for render to finish
-        vkWaitForFences(device, 1, &fence, true, 10000);
+        vkWaitForFences(device, 1, &fence, true, 1000000);
         vkResetFences(device, 1, &fence);
         spdlog::trace("Renderer: waited to fence");
 
@@ -198,10 +199,15 @@ namespace renderer {
         spdlog::trace("Renderer: command buffer reset");
 
         unsigned int next_image_index;
-        vkAcquireNextImageKHR(device, swapchain, 10000, present_semaphore, fence, &next_image_index);
+        auto ret = vkAcquireNextImageKHR(device, swapchain, 1000000, present_semaphore, fence, &next_image_index);
+        if(ret != VK_SUCCESS) {
+            spdlog::warn("Renderer: an error occured when acquiring the next image with error code {}", ret);
+        }
         spdlog::trace("Renderer: swapchain image acquired");
 
-        vkWaitForFences(device, 1, &fence, true, 10000);
+        spdlog::info("Renderer: Next framebuffer is {}", next_image_index);
+
+        vkWaitForFences(device, 1, &fence, true, 1000000);
         vkResetFences(device, 1, &fence);
 
         VkCommandBufferBeginInfo command_buffer_begin_info = {};
@@ -249,7 +255,7 @@ namespace renderer {
         vkQueueSubmit(graphics_command_queue, 1, &submit, fence);
         spdlog::trace("Renderer: command stream submited");
 
-        vkWaitForFences(device, 1, &fence, true, 10000);
+        vkWaitForFences(device, 1, &fence, true, 1000000);
         vkResetFences(device, 1, &fence);
 
         VkPresentInfoKHR presentInfo = {};
