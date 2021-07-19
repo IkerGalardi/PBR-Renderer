@@ -76,7 +76,7 @@ static void initialize_vulkan(SDL_Window* window) {
     vkb::SwapchainBuilder swapchainBuilder{physical_device, device, surface};
     vkb::Swapchain vkbSwapchain = swapchainBuilder
                                     .use_default_format_selection()
-                                    .set_desired_present_mode(VK_PRESENT_MODE_FIFO_KHR)
+                                    .set_desired_present_mode(VK_PRESENT_MODE_IMMEDIATE_KHR)
                                     .set_desired_extent(1000, 1000)
                                     .build()
                                     .value();
