@@ -28,7 +28,7 @@ SDL_Window* platform::create_window(unsigned int width, unsigned int height, con
 		                            SDL_WINDOWPOS_UNDEFINED,
 		                            width,
 		                            height,
-		                            SDL_WINDOW_VULKAN);
+		                            SDL_WINDOW_OPENGL);
 
     spdlog::info("SDL: created window of size {}x{} and title \"{}\"", width, height, title);
 

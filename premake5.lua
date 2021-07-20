@@ -16,7 +16,7 @@ project "pbr"
     includedirs {"lib/include", "src"}
 
     libdirs {"lib/bin"}
-    links {"spdlog", "pthread", "SDL2", "SDL2main", "vulkan", "dl"}
+    links {"spdlog", "SDL2", "SDL2main", "GLEW", "GL", "dl", "pthread"}
 
     defines { "SPDLOG_COMPILED_LIB" }
 
