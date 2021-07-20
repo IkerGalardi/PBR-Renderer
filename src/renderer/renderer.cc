@@ -6,7 +6,8 @@
 #include <spdlog/spdlog.h>
 #include <GL/glew.h>
 
-// OpenGL context stuff
+SDL_Window* window_handle;
+
 SDL_GLContext opengl_context;
 
 static void on_opengl_error(GLenum source, GLenum type, GLuint id, GLenum severity, 
@@ -49,6 +50,8 @@ namespace renderer {
         opengl_context = SDL_GL_CreateContext(window);
         SDL_GL_MakeCurrent(window, opengl_context);
 
+        spdlog::info("Renderer: OpenGL context created");
+
         // Disable VSync
         SDL_GL_SetSwapInterval(0);
 
@@ -60,6 +63,8 @@ namespace renderer {
             std::exit(2);
         }
 
+        spdlog::info("Renderer: OpenGL initialized");
+
         // Setup the opengl viewport size to the window size
         int width, height;
         SDL_GetWindowSize(window, &width, &height);
@@ -68,9 +73,17 @@ namespace renderer {
         // Enable debug messaging with custom callback
         glEnable(GL_DEBUG_OUTPUT);
         glDebugMessageCallback(on_opengl_error, nullptr);
+
+        glClearColor(1.f, 1.f, 0.f, 1.f);
+
+        // Save the window handle for future use (framebuffer swaping)
+        window_handle = window;
     }
 
     void render() {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        SDL_GL_SwapWindow(window_handle);
     }
 
     void destroy() {
