@@ -37,7 +37,7 @@ static void initialize_vulkan(SDL_Window* window) {
     vkb::InstanceBuilder builder;
     auto inst_ret = builder.set_app_name("Example Vulkan Application")
                         .request_validation_layers(true)
-                        .require_api_version(1, 1, 0)
+                        .require_api_version(1, 2, 0)
                         .use_default_debug_messenger()
                         .build();
 
