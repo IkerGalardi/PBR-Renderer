@@ -2,8 +2,6 @@
 
 #include <GL/glew.h>
 
-#include "common.hh"
-
 /// TODO: 
 ///   - deep copy instead of shallow copy as it is right now
 
@@ -27,12 +25,12 @@ namespace gl {
         buffer(buffer_type btype, draw_type dtype);
         ~buffer();
 
-        void set_data(const void* data, uint32 size);
+        void set_data(const void* data, uint32_t size);
     private:
         buffer_type btype;
         draw_type dtype;
 
-        uint32 id;
+        uint32_t id;
     protected:
     };
 }

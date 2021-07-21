@@ -12,8 +12,8 @@ namespace gl {
             glDeleteBuffers(1, &id);
         }
 
-        void buffer::set_data(const void* data, uint32 size) {
-            glBindBuffer(static_cast<uint32>(btype), id);
-            glBufferData(static_cast<uint32>(btype), size, data, static_cast<uint32>(dtype));
+        void buffer::set_data(const void* data, uint32_t size) {
+            glBindBuffer(static_cast<uint32_t>(btype), id);
+            glBufferData(static_cast<uint32_t>(btype), size, data, static_cast<uint32_t>(dtype));
         }
 }

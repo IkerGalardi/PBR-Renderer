@@ -21,12 +21,12 @@ namespace gl {
     };
 
     struct attribute {
-        uint32 count;
+        uint32_t count;
         attrib_type type;
     };
 
     class vertex_array {
-        friend void draw(const gl::shader& shader, const gl::vertex_array& varray, uint32 n);
+        friend void draw(const gl::shader& shader, const gl::vertex_array& varray, uint32_t n);
     public:
         vertex_array();
         ~vertex_array();
@@ -34,7 +34,7 @@ namespace gl {
         void add_buffer(const gl::buffer& buffer);
         void set_layout(std::initializer_list<attribute> attribs);
     private:
-        uint32 id;
+        uint32_t id;
     protected:
     };
 }

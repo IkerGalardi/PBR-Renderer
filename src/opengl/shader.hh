@@ -5,8 +5,6 @@
 
 #include "glm/glm.hpp"
 
-#include "common.hh"
-
 /// TODO: 
 ///    - Uniform location cacheing????
 
@@ -16,7 +14,7 @@ namespace gl {
 
     class shader {
         friend void draw(const gl::shader& shader, const gl::buffer& buffer);
-        friend void draw(const gl::shader& shader, const gl::vertex_array& varray, uint32 n);
+        friend void draw(const gl::shader& shader, const gl::vertex_array& varray, uint32_t n);
     public:
         shader() = default;
         shader(const std::string& vs, const std::string& fs);
@@ -31,9 +29,9 @@ namespace gl {
     private:
         bool is_initialized = false;
 
-        uint32 id;
+        uint32_t id;
 
-        void print_if_errors(uint32 shader);
+        void print_if_errors(uint32_t shader);
     protected:
     };
 }

@@ -2,8 +2,6 @@
 
 #include <filesystem>
 
-#include "common.hh"
-
 namespace gl {
     class texture {
     public:
@@ -13,9 +11,9 @@ namespace gl {
 
         void load(std::filesystem::path path);
 
-        void bind_to_slot(uint32 slot);
+        void bind_to_slot(uint32_t slot);
     private:
-        uint32 id;
+        uint32_t id;
         bool initialized;
     protected:
     };

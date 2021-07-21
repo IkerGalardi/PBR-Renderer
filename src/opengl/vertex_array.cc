@@ -1,6 +1,6 @@
 #include "vertex_array.hh"
 
-static int size_from_gl_type(uint32 type)
+static int size_from_gl_type(uint32_t type)
 {
     switch (type)
     {
@@ -28,13 +28,13 @@ namespace gl {
 
         void vertex_array::add_buffer(const gl::buffer& buffer) {
             glBindVertexArray(id);
-            glBindBuffer(static_cast<uint32>(buffer.btype), buffer.id);
+            glBindBuffer(static_cast<uint32_t>(buffer.btype), buffer.id);
         }
 
         void vertex_array::set_layout(std::initializer_list<attribute> attribs) {
             unsigned int stride = 0;            
             for(attribute attrib : attribs)
-                stride += attrib.count * size_from_gl_type(static_cast<uint32>(attrib.type));
+                stride += attrib.count * size_from_gl_type(static_cast<uint32_t>(attrib.type));
             
             glBindVertexArray(id);
             
@@ -42,8 +42,8 @@ namespace gl {
             unsigned long offset = 0;
             for(attribute attrib : attribs) {
                 glEnableVertexAttribArray(i);
-                int size = size_from_gl_type(static_cast<uint32>(attrib.type));
-                glVertexAttribPointer(i, attrib.count, static_cast<uint32>(attrib.type), GL_FALSE, stride, (const void*)offset);
+                int size = size_from_gl_type(static_cast<uint32_t>(attrib.type));
+                glVertexAttribPointer(i, attrib.count, static_cast<uint32_t>(attrib.type), GL_FALSE, stride, (const void*)offset);
                 offset += attrib.count * size;
                 i++;
             }

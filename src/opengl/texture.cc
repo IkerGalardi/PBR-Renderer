@@ -25,9 +25,9 @@ namespace gl {
         // Load the image. SOIL is being used right now because it was thought at the 
         // start that all the texture things would be done through that library. Right
         // now is only used as a replacement of stb_image
-        int32 width, height, channels;
+        int32_t width, height, channels;
         stbi_set_flip_vertically_on_load(true);
-        uint8* image = stbi_load(path.c_str(), &width, &height, &channels, 4);
+        uint8_t* image = stbi_load(path.c_str(), &width, &height, &channels, 4);
         if(image == nullptr) {
             std::cerr << "No texture found" << std::endl;
         }
@@ -57,7 +57,7 @@ namespace gl {
         initialized = true;
     }
 
-    void texture::bind_to_slot(uint32 slot) {
+    void texture::bind_to_slot(uint32_t slot) {
         //std::cout << "Bound texture " << id << " to slot " << slot << std::endl;
 
         glActiveTexture(GL_TEXTURE0 + slot);
