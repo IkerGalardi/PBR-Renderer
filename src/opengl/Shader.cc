@@ -58,7 +58,7 @@ namespace GL
         glUseProgram(0);
     }
 
-    Shader* Shader::FromFile(const std::string& shader)
+    Shader Shader::FromFile(const std::string& shader)
     {
         enum class ShaderType
         {
@@ -84,7 +84,7 @@ namespace GL
         std::string vertexSource = ss[(size_t)ShaderType::Vertex].str().append("\0");
         std::string fragmentSource = ss[(size_t)ShaderType::Fragment].str().append("\0");
 
-        return new Shader(vertexSource, fragmentSource);
+        return Shader(vertexSource, fragmentSource);
     }
     
     void Shader::SetUniformVector(const char* name, const glm::vec2& vector)
