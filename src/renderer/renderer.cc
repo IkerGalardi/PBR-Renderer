@@ -1,6 +1,7 @@
 #include "renderer.hh"
 
 #include <vector>
+#include <cstdio>
 
 #include <SDL2/SDL.h>
 #include <spdlog/spdlog.h>
@@ -10,6 +11,25 @@
 
 SDL_Window* window_handle;
 SDL_GLContext opengl_context;
+
+std::shared_ptr<GL::Shader> shader;
+
+static std::string read_file(const std::filesystem::path& path) {
+    FILE* file = fopen(path.c_str(), "r");
+    fseek(file, 0, SEEK_END);
+
+    int size = ftell(file);
+    char* file_contets = new char[size + 1];
+
+    fseek(file, 0, SEEK_SET);
+    fread(file_contets, sizeof(char), size, file);
+
+    std::string result{file_contets};
+    
+    delete file_contets;
+
+    return result;
+}
 
 static void on_opengl_error(GLenum source, GLenum type, GLuint id, GLenum severity, 
                             GLsizei length, const GLchar* message, const void* userPara) {
@@ -86,11 +106,22 @@ namespace renderer {
 
         // Save the window handle for future use (framebuffer swaping)
         window_handle = window;
+
+        shader = GL::Shader::FromFile("shaders/basic.glsl");
     }
 
-    void render() {
+    void begin() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
 
+    void render(const mesh& mesh) {
+        mesh.vertex_array->Bind();
+        shader->Bind();
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    }
+
+    void end() {
         SDL_GL_SwapWindow(window_handle);
     }
 

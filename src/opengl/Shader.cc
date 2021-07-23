@@ -6,6 +6,7 @@
 #include <cstdio>
 
 #include <GL/glew.h>
+#include <spdlog/spdlog.h>
 
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -42,6 +43,8 @@ namespace GL
         glDeleteShader(vertexShader);
         glDetachShader(ProgramID, fragmentShader);
         glDeleteShader(fragmentShader);
+
+        spdlog::trace("OpenGL: created shader with id {}", ProgramID);
     }
 
     Shader::~Shader() 
@@ -58,7 +61,7 @@ namespace GL
         glUseProgram(0);
     }
 
-    Shader Shader::FromFile(const std::string& shader)
+    std::shared_ptr<Shader> Shader::FromFile(const std::string& shader)
     {
         enum class ShaderType
         {
@@ -84,7 +87,7 @@ namespace GL
         std::string vertexSource = ss[(size_t)ShaderType::Vertex].str().append("\0");
         std::string fragmentSource = ss[(size_t)ShaderType::Fragment].str().append("\0");
 
-        return Shader(vertexSource, fragmentSource);
+        return std::make_shared<Shader>(vertexSource, fragmentSource);
     }
     
     void Shader::SetUniformVector(const char* name, const glm::vec2& vector)
@@ -126,6 +129,10 @@ namespace GL
                 std::cout << "shader_type -> SHADER_PROGRAM\n";
 
             std::cout << log << std::endl;
+        } 
+        else 
+        {
+            spdlog::trace("OpenGL: shader compilation went alright");
         }
     }
 }

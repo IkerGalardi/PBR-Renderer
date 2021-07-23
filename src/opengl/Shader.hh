@@ -19,7 +19,7 @@ namespace GL
         void Bind();
         void Unbind();
 
-        static Shader FromFile(const std::string& shader);
+        static std::shared_ptr<Shader> FromFile(const std::string& shader);
         
         void SetUniformTexture(const char* name, unsigned int textureSlot);
         void SetUniformVector(const char* name, const glm::vec2& vector);
