@@ -79,6 +79,9 @@ namespace renderer {
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+        // Enable depth testing
+        glEnable(GL_DEPTH_TEST);
+
         glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
         // Save the window handle for future use (framebuffer swaping)
