@@ -60,22 +60,20 @@ endif
 GENERATED :=
 OBJECTS :=
 
-GENERATED += $(OBJDIR)/buffer.o
-GENERATED += $(OBJDIR)/gl.o
+GENERATED += $(OBJDIR)/Buffer.o
+GENERATED += $(OBJDIR)/Shader.o
+GENERATED += $(OBJDIR)/Texture.o
+GENERATED += $(OBJDIR)/VertexArray.o
 GENERATED += $(OBJDIR)/main.o
 GENERATED += $(OBJDIR)/platform.o
 GENERATED += $(OBJDIR)/renderer.o
-GENERATED += $(OBJDIR)/shader.o
-GENERATED += $(OBJDIR)/texture.o
-GENERATED += $(OBJDIR)/vertex_array.o
-OBJECTS += $(OBJDIR)/buffer.o
-OBJECTS += $(OBJDIR)/gl.o
+OBJECTS += $(OBJDIR)/Buffer.o
+OBJECTS += $(OBJDIR)/Shader.o
+OBJECTS += $(OBJDIR)/Texture.o
+OBJECTS += $(OBJDIR)/VertexArray.o
 OBJECTS += $(OBJDIR)/main.o
 OBJECTS += $(OBJDIR)/platform.o
 OBJECTS += $(OBJDIR)/renderer.o
-OBJECTS += $(OBJDIR)/shader.o
-OBJECTS += $(OBJDIR)/texture.o
-OBJECTS += $(OBJDIR)/vertex_array.o
 
 # Rules
 # #############################################
@@ -142,19 +140,16 @@ endif
 $(OBJDIR)/main.o: src/main.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/buffer.o: src/opengl/buffer.cc
+$(OBJDIR)/Buffer.o: src/opengl/Buffer.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/gl.o: src/opengl/gl.cc
+$(OBJDIR)/Shader.o: src/opengl/Shader.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/shader.o: src/opengl/shader.cc
+$(OBJDIR)/Texture.o: src/opengl/Texture.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/texture.o: src/opengl/texture.cc
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/vertex_array.o: src/opengl/vertex_array.cc
+$(OBJDIR)/VertexArray.o: src/opengl/VertexArray.cc
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/platform.o: src/platform.cc

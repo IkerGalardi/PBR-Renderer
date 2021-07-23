@@ -6,12 +6,10 @@
 #include <spdlog/spdlog.h>
 #include <GL/glew.h>
 
-#include "opengl/gl.hh"
+#include "opengl/OpenGL.hh"
 
 SDL_Window* window_handle;
 SDL_GLContext opengl_context;
-
-std::shared_ptr<gl::buffer> triangle_vertex_buffer;
 
 static void on_opengl_error(GLenum source, GLenum type, GLuint id, GLenum severity, 
                             GLsizei length, const GLchar* message, const void* userPara) {
@@ -77,14 +75,18 @@ namespace renderer {
         glEnable(GL_DEBUG_OUTPUT);
         glDebugMessageCallback(on_opengl_error, nullptr);
 
-        gl::set_clear_color({1.0, 0.0, 1.0, 1.0});
+        // Enable blending
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
         // Save the window handle for future use (framebuffer swaping)
         window_handle = window;
     }
 
     void render() {
-        gl::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         SDL_GL_SwapWindow(window_handle);
     }
