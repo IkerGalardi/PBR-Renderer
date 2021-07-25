@@ -33,7 +33,7 @@ namespace GL
     {
         glBindBuffer(BufferType, 0);
     }
-    void Buffer::SetData(void* buffer, unsigned int bufferSize)
+    void Buffer::SetData(const void* buffer, unsigned int bufferSize)
     {
         Bind();
         glBufferData(BufferType, bufferSize, buffer, DrawType);

@@ -12,7 +12,7 @@ namespace GL
         void Bind();
         void Unbind();
 
-        void SetData(void* buffer, unsigned int bufferSize);
+        void SetData(const void* buffer, unsigned int bufferSize);
         void SetSubData(unsigned int offset, void* buffer, unsigned int bufferSize);
     private:
         unsigned int BufferID;
