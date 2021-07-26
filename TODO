@@ -1,0 +1,1 @@
+[ ] Deep copies on OpenGL abstraction (create new buffer/textures and pass data instead of just using same id)
