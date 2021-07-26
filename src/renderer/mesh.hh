@@ -15,7 +15,7 @@ struct vertex {
 
 struct mesh {
     mesh() = default;
-    mesh(std::vector<vertex> vertices, std::vector<unsigned int> elements);
+    mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>& elements);
 
     std::shared_ptr<GL::VertexArray> vertex_array;
     std::shared_ptr<GL::Buffer> vertex_buffer;
