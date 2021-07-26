@@ -114,8 +114,8 @@ namespace renderer {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void render(const mesh& mesh) {
-        mesh.vertex_array->Bind();
+    void render(const model& model) {
+        model.mesh_data->vertex_array->Bind();
         shader->Bind();
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

@@ -7,13 +7,17 @@
 #include "platform.hh"
 #include "renderer/renderer.hh"
 #include "renderer/mesh.hh"
+#include "renderer/model.hh"
 
 int main(int argc, char** argv) {
     auto* window = platform::get().create_window(1000, 1000, "test");
 
     renderer::initialize(window);
 
-    mesh m(std::filesystem::path{}, std::filesystem::path{});
+    model m(std::filesystem::path{"models/suzanne.obj"},
+            std::filesystem::path{}, 
+            std::filesystem::path{},
+            std::filesystem::path{});
 
     platform::get().loop([&](SDL_Event& event) {
         if(SDL_PollEvent(&event)) {

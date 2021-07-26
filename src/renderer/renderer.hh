@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "model.hh"
 #include "mesh.hh"
 
 namespace renderer {
@@ -9,7 +10,7 @@ namespace renderer {
 
     void begin();
 
-    void render(const mesh& mesh);
+    void render(const model& mesh);
 
     void end();
 
