@@ -48,9 +48,6 @@ static void on_opengl_error(GLenum source, GLenum type, GLuint id, GLenum severi
             break;
 
         case GL_DEBUG_SEVERITY_LOW:
-            spdlog::info("OpenGL: {}", message);
-            break;
-
         case GL_DEBUG_SEVERITY_NOTIFICATION:
             spdlog::trace("OpenGL: {}", message);
             break;
