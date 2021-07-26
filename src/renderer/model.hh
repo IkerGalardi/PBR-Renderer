@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include "mesh.hh"
 
 struct model {
@@ -12,4 +14,6 @@ struct model {
     std::shared_ptr<GL::Texture> diffuse;
     std::shared_ptr<GL::Texture> roughness;
     std::shared_ptr<GL::Texture> normal;
+
+    glm::vec3 position;
 };
