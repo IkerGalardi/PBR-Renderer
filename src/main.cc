@@ -15,14 +15,14 @@ int main(int argc, char** argv) {
     renderer::initialize(window);
 
     renderer::scene_data scene_data;
-    scene_data.camera_position = {0.0f, 0.0f, -1.0f};
+    scene_data.camera_position = {0.0f, 0.0f, 0.0f};
     scene_data.camera_fov = 60.0f;
 
     model m(std::filesystem::path{"models/suzanne.obj"},
             std::filesystem::path{}, 
             std::filesystem::path{},
             std::filesystem::path{});
-    m.position = {0.0f, 0.0f, 0.0f};
+    m.position = {1.5f, 0.0f, 0.0f};
 
     platform::get().loop([&](SDL_Event& event) {
         if(SDL_PollEvent(&event)) {
@@ -37,6 +37,8 @@ int main(int argc, char** argv) {
         renderer::render(m);
 
         renderer::end();
+
+        while(true);
 
         return false;
     });

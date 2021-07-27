@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 #include "opengl/OpenGL.hh"
 
@@ -15,8 +16,6 @@ SDL_Window* window_handle;
 SDL_GLContext opengl_context;
 
 std::shared_ptr<GL::Shader> shader;
-
-glm::mat4 view_projection_matrix;
 
 static std::string read_file(const std::filesystem::path& path) {
     FILE* file = fopen(path.c_str(), "r");
@@ -115,30 +114,30 @@ namespace renderer {
         // Clear the framebuffer to redraw on it
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        shader->Bind();
+
         // Calculate the projection matrix
         int width, height;
         SDL_GetWindowSize(window_handle, &width, &height);
         float aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
         glm::mat4 projection_matrix = glm::perspective(glm::radians(scene_data.camera_fov), aspect_ratio, 0.01f, 100.0f);
+        shader->SetUniformMatrix("proj", projection_matrix);
 
         // Calculate the view matrix
         glm::mat4 view_matrix{1.0f};
         glm::translate(view_matrix, -scene_data.camera_position);
+        shader->SetUniformMatrix("view", view_matrix);
 
         // Calculate the view projection matrix and upload to the GPU
-        view_projection_matrix = view_matrix * projection_matrix;
-        shader->Bind();
-        shader->SetUniformMatrix("view_projection_matrix", view_projection_matrix);
     }
 
     void render(const model& model) {
         model.mesh_data->vertex_array->Bind();
-        shader->Bind();
 
         // Calculate the model transformation matrix
         glm::mat4 model_matrix{1.0f};
-        //glm::translate(model_matrix, model.position);
-        shader->SetUniformMatrix("model_matrix", model_matrix);
+        glm::translate(model_matrix, model.position);
+        shader->SetUniformMatrix("model", model_matrix);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }

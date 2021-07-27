@@ -10,6 +10,7 @@
 
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/string_cast.hpp"
 
 #define PRINT(X) std::cout << X << std::endl
 
@@ -105,6 +106,11 @@ namespace GL
     void Shader::SetUniformMatrix(const char* name, const glm::mat4& matrix)
     {
         int loc = glGetUniformLocation(ProgramID, name);
+        if(loc == -1)
+            spdlog::warn("OpenGL: uniform {} could not be found", name);
+
+        spdlog::trace("OpenGL: {} \n {}", name, glm::to_string(matrix));
+
         glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
     }
     void Shader::SetUniformTexture(const char* name, unsigned int textureSlot)
