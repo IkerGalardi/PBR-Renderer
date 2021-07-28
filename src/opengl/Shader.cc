@@ -12,8 +12,6 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtx/string_cast.hpp"
 
-#define PRINT(X) std::cout << X << std::endl
-
 namespace GL 
 {
     Shader::Shader(const std::string& vs, const std::string& fs) 
@@ -23,14 +21,12 @@ namespace GL
         unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexSource, nullptr);
         glCompileShader(vertexShader);
-        PrintShaderErrors(GL_VERTEX_SHADER, vertexShader);
         
         // Create the fragment shader
         const char* fragmentSource = fs.c_str();
         unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentSource, nullptr);
         glCompileShader(fragmentShader);
-        PrintShaderErrors(GL_FRAGMENT_SHADER, fragmentShader);
 
         // Build the shader program
         ProgramID = glCreateProgram();
@@ -116,28 +112,5 @@ namespace GL
     {
         int loc = glGetUniformLocation(ProgramID, name);
         glUniform1i(loc, textureSlot);
-    }
-
-    void Shader::PrintShaderErrors(unsigned int shaderType, int shaderID)
-    {
-        int success;
-        char log[512];
-        glGetShaderiv(shaderID, GL_COMPILE_STATUS, &success);
-
-        if(!success) {
-            glGetShaderInfoLog(shaderID, 512, NULL, log);
-            if(shaderType == GL_VERTEX_SHADER)
-                std::cout << "shader_type -> VERTEX_SHADER\n";
-            else if(shaderType == GL_FRAGMENT_SHADER)
-                std::cout << "shader_type -> FRAGMENT_SHADER\n";
-            else if(shaderType == GL_PROGRAM)
-                std::cout << "shader_type -> SHADER_PROGRAM\n";
-
-            std::cout << log << std::endl;
-        } 
-        else 
-        {
-            spdlog::trace("OpenGL: shader compilation went alright");
-        }
     }
 }

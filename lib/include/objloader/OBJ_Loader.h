@@ -531,7 +531,7 @@ namespace objl
 						}
 					}
 					#ifdef OBJL_CONSOLE_OUTPUT
-					std::cout << std::endl;
+					//std::cout << std::endl;
 					outputIndicator = 0;
 					#endif
 				}
@@ -668,7 +668,7 @@ namespace objl
 			}
 
 			#ifdef OBJL_CONSOLE_OUTPUT
-			std::cout << std::endl;
+			//std::cout << std::endl;
 			#endif
 
 			// Deal with last mesh
