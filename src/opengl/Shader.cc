@@ -107,8 +107,8 @@ namespace GL
     {
         int loc = glGetUniformLocation(ProgramID, name);
         
-        //if(loc == -1)
-        //    spdlog::warn("OpenGL: uniform {} could not be found, uniform data not changed", name);
+        if(loc == -1)
+            spdlog::warn("OpenGL: uniform {} could not be found, uniform data not changed", name);
 
         glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
     }

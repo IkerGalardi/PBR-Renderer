@@ -13,7 +13,7 @@ out vec4 v_test;
 
 void main()
 {
-    gl_Position = u_view * u_model * vec4(in_position, 1.0);
+    gl_Position = u_proj * u_view * u_model * vec4(in_position, 1.0);
 }
 
 #shader frag

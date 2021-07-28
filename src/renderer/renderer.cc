@@ -121,7 +121,7 @@ namespace renderer {
         SDL_GetWindowSize(window_handle, &width, &height);
         float aspect_ratio = static_cast<float>(width) / static_cast<float>(height);
         glm::mat4 projection_matrix = glm::perspective(glm::radians(scene_data.camera_fov), aspect_ratio, 0.01f, 100.0f);
-        shader->SetUniformMatrix("proj", projection_matrix);
+        shader->SetUniformMatrix("u_proj", projection_matrix);
 
         // Calculate the view matrix
         glm::mat4 view_matrix{1.0f};
