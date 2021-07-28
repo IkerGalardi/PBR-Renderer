@@ -104,7 +104,7 @@ namespace renderer {
 
         glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 
-        // Save the window handle for future use (framebuffer swaping)
+        // Save the window handle for future use (framebuffer swaping and aspect ratio calculation)
         window_handle = window;
 
         shader = GL::Shader::FromFile("shaders/phong.glsl");
@@ -128,7 +128,8 @@ namespace renderer {
         view_matrix = glm::translate(view_matrix, -scene_data.camera_position);
         shader->SetUniformMatrix("u_view", view_matrix);
 
-        // Calculate the view projection matrix and upload to the GPU
+        // Send the camera position
+        shader->SetUniformVector("u_camera_position", scene_data.camera_position);
     }
 
     void render(const model& model) {

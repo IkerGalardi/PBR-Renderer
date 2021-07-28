@@ -11,12 +11,17 @@ uniform mat4 u_model;
 
 out vec3 v_normal;
 out vec2 v_texture_coordinates;
+out vec3 v_fragment_position;
 
 void main()
 {
     // Variables to pass to fragment shader
     v_normal = in_normal;
     v_texture_coordinates = in_texture_coords;
+    
+    // Position of fragment (pixel) on world space. This is going to be used to
+    // calculate the specular part of phong shading.
+    v_fragment_position = vec3(u_model * vec4(in_position, 1.0));
 
     gl_Position = u_proj * u_view * u_model * vec4(in_position, 1.0);
 }
@@ -26,6 +31,9 @@ void main()
 
 in vec3 v_normal;
 in vec2 v_texture_coordinates;
+in vec3 v_fragment_position;
+
+uniform vec3 u_camera_position;
 
 out vec4 out_color;
 
@@ -38,6 +46,7 @@ const vec3 light_direction = vec3(0.0, 1.0, 0.0);
 
 void main()
 {
+    // Gather from the textures all the necessary values
     vec3 base_color = texture(diffuse_texture, v_texture_coordinates).xyz;
     float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
     vec3 normal_vector = texture(normal_texture, v_texture_coordinates).xyz;
@@ -46,8 +55,13 @@ void main()
     vec3 normalized_normal = normalize(v_normal);
     vec3 normalized_light = normalize(light_direction);
 
-    float light_value = max(dot(normalized_light, normalized_normal), 0.0);
+    float diffuse_component = max(dot(normalized_normal, normalized_light), 0.0);
+    
+    vec3 view_direction = normalize(u_camera_position - v_fragment_position);
+    vec3 reflected_direction = reflect(-light_direction, normalized_normal);
+    float shininess = (1 - roughness_value) * 256;
+    float specular_component = pow(max(dot(view_direction, reflected_direction), 0.0), shininess);
 
-    vec3 final_color = ambient_color * base_color + light_value * base_color;
+    vec3 final_color = (ambient_color + diffuse_component + specular_component) * base_color;
     out_color = vec4(min(final_color, vec3(1.0)), 1.0f);
 } 
