@@ -14,6 +14,7 @@ struct model {
     std::shared_ptr<GL::Texture> diffuse;
     std::shared_ptr<GL::Texture> roughness;
     std::shared_ptr<GL::Texture> normal;
+    unsigned int vertex_count;
 
     glm::vec3 position;
 };

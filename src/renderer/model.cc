@@ -40,4 +40,5 @@ model::model(const std::filesystem::path& mesh,
     });
 
     mesh_data = std::make_shared<::mesh>(real_vertices, loader.LoadedIndices);
+    vertex_count = real_vertices.size();
 }
