@@ -13,6 +13,8 @@
 int main(int argc, char** argv) {
     auto* window = platform::get().create_window(1000, 1000, "test");
 
+    spdlog::set_level(spdlog::level::info);
+
     renderer::initialize(window);
 
     renderer::scene_data scene_data;
