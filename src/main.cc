@@ -16,8 +16,8 @@ int main(int argc, char** argv) {
     renderer::initialize(window);
 
     renderer::scene_data scene_data;
-    scene_data.camera_position = {0.0f, 0.0f, 0.0f};
-    scene_data.camera_fov = 90.0f;
+    scene_data.camera_position = {0.0f, 0.0f, 3.0f};
+    scene_data.camera_fov = 60.0f;
 
     model m(std::filesystem::path{"models/suzanne.obj"},
             std::filesystem::path{}, 
@@ -32,12 +32,6 @@ int main(int argc, char** argv) {
                 return true;
             }
         }
-
-        // Change position
-        static double time = 0.0f;
-        time += .001f;
-        scene_data.camera_position.z = 2.0 * std::sin(time) + 2.5;
-        spdlog::trace("{}", scene_data.camera_position.z);
 
         renderer::begin(scene_data);
 

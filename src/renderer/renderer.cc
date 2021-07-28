@@ -139,7 +139,7 @@ namespace renderer {
         model_matrix = glm::translate(model_matrix, model.position);
         shader->SetUniformMatrix("u_model", model_matrix);
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, model.vertex_count, GL_UNSIGNED_INT, nullptr);
     }
 
     void end() {
