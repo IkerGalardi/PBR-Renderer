@@ -139,6 +139,13 @@ namespace renderer {
         model_matrix = glm::translate(model_matrix, model.position);
         shader->SetUniformMatrix("u_model", model_matrix);
 
+        model.diffuse->Bind(0);
+        model.roughness->Bind(1);
+        model.normal->Bind(2);
+        shader->SetUniformTexture("diffuse_texture", 0);
+        shader->SetUniformTexture("roughness_texture", 1);
+        shader->SetUniformTexture("normal_texture", 2);
+
         glDrawElements(GL_TRIANGLES, model.vertex_count, GL_UNSIGNED_INT, nullptr);
     }
 

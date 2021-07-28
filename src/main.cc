@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
     scene_data.camera_position = {0.0f, 0.0f, 3.0f};
     scene_data.camera_fov = 60.0f;
 
-    model m(std::filesystem::path{"models/suzanne.obj"},
-            std::filesystem::path{}, 
-            std::filesystem::path{},
-            std::filesystem::path{});
+    model m(std::filesystem::path{"models/suzanne/suzanne.obj"},
+            std::filesystem::path{"models/suzanne/suzanne_color.png"}, 
+            std::filesystem::path{"models/suzanne/suzanne_roughness.png"},
+            std::filesystem::path{"models/suzanne/suzanne_normal.png"});
     m.position = {0.0f, 0.0f, 0.0f};
 
     platform::get().loop([&](SDL_Event& event) {

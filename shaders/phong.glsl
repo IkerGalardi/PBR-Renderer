@@ -29,13 +29,19 @@ in vec2 v_texture_coordinates;
 
 out vec4 out_color;
 
+uniform sampler2D diffuse_texture;
+uniform sampler2D roughness_texture;
+uniform sampler2D normal_texture;
+
 const float ambient_color = 0.3;
-const vec3 base_color = vec3(0.7, 1, 0.0);
-const vec3 specular_color = vec3(1.0, 1.0, 1.0);
 const vec3 light_direction = vec3(0.0, 1.0, 0.0);
 
 void main()
 {
+    vec3 base_color = texture(diffuse_texture, v_texture_coordinates).xyz;
+    float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
+    vec3 normal_vector = texture(normal_texture, v_texture_coordinates).xyz;
+
     // Normalize light direction and normal not to mess with lighting
     vec3 normalized_normal = normalize(v_normal);
     vec3 normalized_light = normalize(light_direction);

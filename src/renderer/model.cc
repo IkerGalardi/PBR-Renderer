@@ -12,10 +12,9 @@ model::model(const std::filesystem::path& mesh,
              const std::filesystem::path& diffuse,
              const std::filesystem::path& roughness,
              const std::filesystem::path& normal) {
-    // this->diffuse = std::make_shared<GL::Texture>(diffuse.c_str());
-    // this->roughness = std::make_shared<GL::Texture>(roughness.c_str());
-    // this->normal = std::make_shared<GL::Texture>(normal.c_str());
-
+    this->diffuse = std::make_shared<GL::Texture>(diffuse.c_str());
+    this->roughness = std::make_shared<GL::Texture>(roughness.c_str());
+    this->normal = std::make_shared<GL::Texture>(normal.c_str());
     spdlog::trace("Renderer: loaded textures {}, {}, {}", diffuse.c_str(), roughness.c_str(), normal.c_str());
 
     objl::Loader loader;
