@@ -36,7 +36,8 @@ int main(int argc, char** argv) {
         // Change position
         static double time = 0.0f;
         time += .001f;
-        m.position.y = std::sin(time);
+        m.position.y = 0.5 * std::sin(time);
+        scene_data.camera_position.x = 0.5 * std::sin(time);
 
         renderer::begin(scene_data);
 

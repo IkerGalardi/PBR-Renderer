@@ -125,8 +125,8 @@ namespace renderer {
 
         // Calculate the view matrix
         glm::mat4 view_matrix{1.0f};
-        glm::translate(view_matrix, -scene_data.camera_position);
-        shader->SetUniformMatrix("view", view_matrix);
+        view_matrix = glm::translate(view_matrix, -scene_data.camera_position);
+        shader->SetUniformMatrix("u_view", view_matrix);
 
         // Calculate the view projection matrix and upload to the GPU
     }
