@@ -107,7 +107,7 @@ namespace renderer {
         // Save the window handle for future use (framebuffer swaping)
         window_handle = window;
 
-        shader = GL::Shader::FromFile("shaders/basic.glsl");
+        shader = GL::Shader::FromFile("shaders/phong.glsl");
     }
 
     void begin(const scene_data& scene_data) {
