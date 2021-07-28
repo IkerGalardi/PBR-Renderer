@@ -136,8 +136,10 @@ namespace renderer {
 
         // Calculate the model transformation matrix
         glm::mat4 model_matrix{1.0f};
-        glm::translate(model_matrix, model.position);
-        shader->SetUniformMatrix("model", model_matrix);
+        model_matrix = glm::translate(model_matrix, model.position);
+        spdlog::error("{}", glm::to_string(model.position));
+        spdlog::error("{}", glm::to_string(model_matrix));
+        shader->SetUniformMatrix("u_model", model_matrix);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     }

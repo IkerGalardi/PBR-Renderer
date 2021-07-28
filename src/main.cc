@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 #include <spdlog/spdlog.h>
 #include <SDL2/SDL.h>
@@ -16,13 +17,13 @@ int main(int argc, char** argv) {
 
     renderer::scene_data scene_data;
     scene_data.camera_position = {0.0f, 0.0f, 0.0f};
-    scene_data.camera_fov = 60.0f;
+    scene_data.camera_fov = 90.0f;
 
     model m(std::filesystem::path{"models/suzanne.obj"},
             std::filesystem::path{}, 
             std::filesystem::path{},
             std::filesystem::path{});
-    m.position = {1.5f, 0.0f, 0.0f};
+    m.position = {0.0f, 0.0f, 0.0f};
 
     platform::get().loop([&](SDL_Event& event) {
         if(SDL_PollEvent(&event)) {
@@ -32,13 +33,16 @@ int main(int argc, char** argv) {
             }
         }
 
+        // Change position
+        static double time = 0.0f;
+        time += .001f;
+        m.position.y = std::sin(time);
+
         renderer::begin(scene_data);
 
         renderer::render(m);
 
         renderer::end();
-
-        while(true);
 
         return false;
     });

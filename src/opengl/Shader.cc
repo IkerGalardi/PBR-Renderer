@@ -106,10 +106,9 @@ namespace GL
     void Shader::SetUniformMatrix(const char* name, const glm::mat4& matrix)
     {
         int loc = glGetUniformLocation(ProgramID, name);
-        if(loc == -1)
-            spdlog::warn("OpenGL: uniform {} could not be found", name);
-
-        spdlog::trace("OpenGL: {} \n {}", name, glm::to_string(matrix));
+        
+        //if(loc == -1)
+        //    spdlog::warn("OpenGL: uniform {} could not be found, uniform data not changed", name);
 
         glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
     }
