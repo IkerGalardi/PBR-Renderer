@@ -44,7 +44,7 @@ uniform sampler2D roughness_texture;
 uniform sampler2D normal_texture;
 
 const float ambient_color = 0.3;
-const vec3 light_direction = vec3(0.0, 1.0, 0.0);
+const vec3 light_direction = vec3(1.0, 1.0, 0.0);
 
 float fresnel_schlick(float cos_theta, float F0) {
     return F0 + (1.0 - F0) * pow(max(1.0 - cos_theta, 0.0), 5.0);
@@ -104,11 +104,10 @@ void main()
     float specular_fraction = fresnel_distribution;
     float diffuse_fraction = 1 - specular_fraction;
 
-    vec3 lambert_diffuse = base_color;// / PI;
     float cook_torrance_specular = numerator / denominator;
 
-    vec3 final_fragment = diffuse_fraction * lambert_diffuse + 
+    vec3 final_fragment = diffuse_fraction * base_color + 
                           specular_fraction * cook_torrance_specular;
 
-    out_color = vec4(vec3(final_fragment), 1.0);
+    out_color = vec4(final_fragment, 1.0);
 }

@@ -11,7 +11,7 @@
 #include "renderer/model.hh"
 
 int main(int argc, char** argv) {
-    auto* window = platform::get().create_window(1000, 1000, "test");
+    auto* window = platform::get().create_window(2000, 2000, "test");
 
     spdlog::set_level(spdlog::level::info);
 
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     scene_data.camera_position = {0.0f, 0.0f, 3.0f};
     scene_data.camera_fov = 60.0f;
 
-    model m(std::filesystem::path{"models/suzanne/suzanne.obj"},
+    model m(std::filesystem::path{"models/sphere.obj"},
             std::filesystem::path{"models/suzanne/suzanne_color.png"}, 
             std::filesystem::path{"models/suzanne/suzanne_roughness.png"},
             std::filesystem::path{"models/suzanne/suzanne_normal.png"});
