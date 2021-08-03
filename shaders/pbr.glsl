@@ -29,7 +29,7 @@ void main()
 #shader frag
 #version 330 core
 
-const float PI = 3.1416;
+const float PI = 3.1415926535897932384626433832795;
 
 in vec3 v_normal;
 in vec2 v_texture_coordinates;
