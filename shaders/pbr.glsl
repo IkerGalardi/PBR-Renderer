@@ -93,7 +93,8 @@ void main()
     vec3 L = normalize(light_direction);
     vec3 H = normalize(V + L);
 
-    float fresnel_distribution = fresnel_schlick(max(dot(H, V), 0.0), 0.03);
+    float cos_theta = max(dot(H, V), 0.0);
+    float fresnel_distribution = fresnel_schlick(max(dot(H, V), 0.0), 0.33);
     float geometry_distribution = geometry_smith(N, V, L, roughness_value);
     float normal_distribution = distribution_ggx(N, H, roughness_value);
 
@@ -103,11 +104,11 @@ void main()
     float specular_fraction = fresnel_distribution;
     float diffuse_fraction = 1 - specular_fraction;
 
-    vec3 lambert_diffuse = base_color / PI;
+    vec3 lambert_diffuse = base_color;// / PI;
     float cook_torrance_specular = numerator / denominator;
 
     vec3 final_fragment = diffuse_fraction * lambert_diffuse + 
                           specular_fraction * cook_torrance_specular;
 
-    out_color = vec4(final_fragment, 1.0);
+    out_color = vec4(vec3(final_fragment), 1.0);
 }
