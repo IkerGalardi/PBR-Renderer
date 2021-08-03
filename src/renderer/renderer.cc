@@ -107,7 +107,7 @@ namespace renderer {
         // Save the window handle for future use (framebuffer swaping and aspect ratio calculation)
         window_handle = window;
 
-        shader = GL::Shader::FromFile("shaders/phong.glsl");
+        shader = GL::Shader::FromFile("shaders/pbr.glsl");
     }
 
     void begin(const scene_data& scene_data) {
