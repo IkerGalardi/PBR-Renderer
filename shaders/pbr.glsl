@@ -52,7 +52,7 @@ float fresnel_schlick(float cos_theta, float F0) {
 
 float distribution_ggx(vec3 N, vec3 H, float a)
 {
-    float a2     = a * a * a * a;
+    float a2     = a * a;
     float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH*NdotH;
 
@@ -73,8 +73,8 @@ float geometry_schlick_ggx(float NdotV, float k)
   
 float geometry_smith(vec3 N, vec3 V, vec3 L, float k)
 {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
+    float NdotV = max(dot(V, N), 0.0);
+    float NdotL = max(dot(L, N), 0.0);
     float ggx1 = geometry_schlick_ggx(NdotV, k);
     float ggx2 = geometry_schlick_ggx(NdotL, k);
 	
@@ -88,8 +88,8 @@ void main()
     float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
     vec3 normal_vector = texture(normal_texture, v_texture_coordinates).xyz;
 
-    float alpha = roughness_value;
-    float k = pow((alpha + 1), 2) / 8;
+    float alpha = roughness_value * roughness_value;
+    float k = pow((roughness_value + 1), 2) / 8;
 
     vec3 N = normalize(v_normal);
     vec3 V = normalize(u_camera_position - v_fragment_position);
