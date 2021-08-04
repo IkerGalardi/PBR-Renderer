@@ -47,12 +47,12 @@ const float ambient_color = 0.3;
 const vec3 light_direction = vec3(1.0, 1.0, 0.0);
 
 float fresnel_schlick(float cos_theta, float F0) {
-    return F0 + (1.0 - F0) * pow(max(1.0 - cos_theta, 0.0), 5.0);
+    return F0 + (1.0 - F0) * pow(1.0 - cos_theta, 5.0);
 }
 
 float distribution_ggx(vec3 N, vec3 H, float a)
 {
-    float a2     = a*a;
+    float a2     = a * a * a * a;
     float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH*NdotH;
 
@@ -88,6 +88,9 @@ void main()
     float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
     vec3 normal_vector = texture(normal_texture, v_texture_coordinates).xyz;
 
+    float alpha = roughness_value;
+    float k = pow((alpha + 1), 2) / 8;
+
     vec3 N = normalize(v_normal);
     vec3 V = normalize(u_camera_position - v_fragment_position);
     vec3 L = normalize(light_direction);
@@ -95,8 +98,8 @@ void main()
 
     float cos_theta = max(dot(H, V), 0.0);
     float fresnel_distribution = fresnel_schlick(max(dot(H, V), 0.0), 0.33);
-    float geometry_distribution = geometry_smith(N, V, L, roughness_value);
-    float normal_distribution = distribution_ggx(N, H, roughness_value);
+    float geometry_distribution = geometry_smith(N, V, L, k);
+    float normal_distribution = distribution_ggx(N, H, alpha);
 
     float numerator = normal_distribution * fresnel_distribution * geometry_distribution;
     float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
@@ -109,7 +112,7 @@ void main()
 
     vec3 final_diffuse = diffuse_fraction * lambertian_diffuse;
     float final_specular = specular_fraction * cook_torrance_specular;
-    vec3 final_fragment = pow(final_diffuse + final_specular, vec3(1.0 / 2.2));
+    vec3 final_fragment = pow(final_diffuse * final_specular, vec3(1.0 / 2.2));
 
     out_color = vec4(final_fragment, 1.0);
 }

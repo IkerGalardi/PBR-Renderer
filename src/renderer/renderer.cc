@@ -104,7 +104,7 @@ namespace renderer {
         // Enable depth testing
         glEnable(GL_DEPTH_TEST);
 
-        glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // Save the window handle for future use (framebuffer swaping and aspect ratio calculation)
         window_handle = window;
