@@ -104,10 +104,12 @@ void main()
     float specular_fraction = fresnel_distribution;
     float diffuse_fraction = 1 - specular_fraction;
 
+    vec3 lambertian_diffuse = base_color / PI;
     float cook_torrance_specular = numerator / denominator;
 
-    vec3 final_fragment = diffuse_fraction * base_color + 
-                          specular_fraction * cook_torrance_specular;
+    vec3 final_diffuse = diffuse_fraction * lambertian_diffuse;
+    float final_specular = specular_fraction * cook_torrance_specular;
+    vec3 final_fragment = pow(final_diffuse + final_specular, vec3(1.0 / 2.2));
 
     out_color = vec4(final_fragment, 1.0);
 }
