@@ -112,7 +112,7 @@ void main()
 
     vec3 final_diffuse = diffuse_fraction * lambertian_diffuse;
     float final_specular = specular_fraction * cook_torrance_specular;
-    vec3 final_fragment = pow(final_diffuse * final_specular, vec3(1.0 / 2.2));
+    vec3 final_fragment = pow(final_diffuse + final_specular, vec3(1.0 / 2.2));
 
     out_color = vec4(final_fragment, 1.0);
 }
