@@ -84,7 +84,7 @@ float geometry_smith(vec3 N, vec3 V, vec3 L, float k)
 void main()
 {
     // Gather from the textures all the necessary values
-    vec3 base_color = texture(diffuse_texture, v_texture_coordinates).xyz;
+    vec3 base_color = pow(texture(diffuse_texture, v_texture_coordinates).xyz, vec3(2.2));
     float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
     vec3 normal_vector = texture(normal_texture, v_texture_coordinates).xyz;
 
