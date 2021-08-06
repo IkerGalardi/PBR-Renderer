@@ -102,13 +102,13 @@ void main()
     float normal_distribution = distribution_ggx(N, H, alpha);
 
     float numerator = normal_distribution * fresnel_distribution * geometry_distribution;
-    float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0);
+    float denominator = 4 * max(dot(N, V), 0.0) * max(dot(N, L), 0.0) + 0.001;
 
     float specular_fraction = fresnel_distribution;
     float diffuse_fraction = 1 - specular_fraction;
 
     vec3 lambertian_diffuse = base_color / PI;
-    float cook_torrance_specular = max(numerator / denominator, 0.0);
+    float cook_torrance_specular = numerator / denominator;
 
     float radiance = dot(N, L);
 
@@ -116,5 +116,5 @@ void main()
     float final_specular = specular_fraction * cook_torrance_specular;
     vec3 final_fragment = pow(final_diffuse + final_specular, vec3(1.0 / 2.2));
 
-    out_color = vec4(vec3(radiance), 1.0);
+    out_color = vec4(final_fragment, 1.0);
 }
