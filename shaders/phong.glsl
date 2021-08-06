@@ -62,6 +62,6 @@ void main()
     float shininess = (1 - roughness_value) * 256;
     float specular_component = pow(max(dot(view_direction, reflected_direction), 0.0), shininess);
 
-    vec3 final_color = (ambient + diffuse_component + specular_component) * base_color;
+    vec3 final_color = (ambient_color + diffuse_component + specular_component) * base_color;
     out_color = vec4(min(final_color, vec3(1.0)), 1.0f);
 } 
