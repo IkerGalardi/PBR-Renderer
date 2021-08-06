@@ -45,6 +45,7 @@ uniform sampler2D normal_texture;
 
 const float ambient_color = 0.3;
 const vec3 light_direction = vec3(1.0, 1.0, 0.0);
+const float light_intensity = 5.0;
 
 float fresnel_schlick(float cos_theta, float F0) {
     return F0 + (1.0 - F0) * pow(1.0 - cos_theta, 5.0);
@@ -110,11 +111,12 @@ void main()
     vec3 lambertian_diffuse = base_color / PI;
     float cook_torrance_specular = numerator / denominator;
 
-    float radiance = dot(N, L);
+    float radiance = max(dot(N, L) * light_intensity, 0.0);
 
     vec3 final_diffuse = diffuse_fraction * lambertian_diffuse;
     float final_specular = specular_fraction * cook_torrance_specular;
-    vec3 final_fragment = pow(final_diffuse + final_specular, vec3(1.0 / 2.2));
+    vec3 final_lit = (final_diffuse + final_specular) * radiance;
+    vec3 gamma_corrected = pow(final_lit, vec3(1.0 / 2.2));
 
-    out_color = vec4(final_fragment, 1.0);
+    out_color = vec4(gamma_corrected, 1.0);
 }
