@@ -109,14 +109,12 @@ void main()
 
     vec3 lambertian_diffuse = base_color / PI;
     float cook_torrance_specular = max(numerator / denominator, 0.0);
-    if(cook_torrance_specular < 0.0) {
-        out_color = vec4(1.0, 0.0, 1.0, 1.0);
-        return;
-    }
+
+    float radiance = dot(N, L);
 
     vec3 final_diffuse = diffuse_fraction * lambertian_diffuse;
     float final_specular = specular_fraction * cook_torrance_specular;
     vec3 final_fragment = pow(final_diffuse + final_specular, vec3(1.0 / 2.2));
 
-    out_color = vec4(final_fragment, 1.0);
+    out_color = vec4(vec3(radiance), 1.0);
 }
