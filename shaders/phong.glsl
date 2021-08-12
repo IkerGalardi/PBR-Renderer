@@ -42,7 +42,7 @@ uniform sampler2D roughness_texture;
 uniform sampler2D normal_texture;
 
 const float ambient_color = 0.3;
-const vec3 light_direction = vec3(0.0, 1.0, 0.0);
+const vec3 light_direction = vec3(1.0, 1.0, 0.0);
 
 void main()
 {

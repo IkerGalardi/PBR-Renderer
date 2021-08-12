@@ -66,6 +66,8 @@ namespace renderer {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);        
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+        SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
         // Create the OpenGL context and make it current
         opengl_context = SDL_GL_CreateContext(window);
@@ -102,12 +104,12 @@ namespace renderer {
         // Enable depth testing
         glEnable(GL_DEPTH_TEST);
 
-        glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         // Save the window handle for future use (framebuffer swaping and aspect ratio calculation)
         window_handle = window;
 
-        shader = GL::Shader::FromFile("shaders/phong.glsl");
+        shader = GL::Shader::FromFile("shaders/pbr.glsl");
     }
 
     void begin(const scene_data& scene_data) {
