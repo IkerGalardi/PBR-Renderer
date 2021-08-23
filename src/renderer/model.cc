@@ -38,6 +38,40 @@ model::model(const std::filesystem::path& mesh,
         return v;
     });
 
+    /// TODO: merge with before loop, double iteration is stupid
+    for(int i = 0; i < real_vertices.size(); i += 3) {
+        vertex& v0 = real_vertices[i + 0];
+        vertex& v1 = real_vertices[i + 1];
+        vertex& v2 = real_vertices[i + 2];
+
+        glm::vec3 edge1 = v1.position - v0.position;
+        glm::vec3 edge2 = v2.position - v0.position;
+
+        float delta_u1 = v1.texture_coordinates.x - v0.texture_coordinates.x;
+        float delta_v1 = v1.texture_coordinates.y - v0.texture_coordinates.y;
+        float delta_u2 = v2.texture_coordinates.x - v0.texture_coordinates.x;
+        float delta_v2 = v2.texture_coordinates.y - v0.texture_coordinates.y;
+
+        float f = delta_u1 * delta_v2 - delta_u2 * delta_v1;
+
+        glm::vec3 tangent, bitangent;
+
+        tangent.x = f * (delta_v2 * edge1.x - delta_v1 * edge2.x);
+        tangent.y = f * (delta_v2 * edge1.y - delta_v1 * edge2.y);
+        tangent.z = f * (delta_v2 * edge1.z - delta_v1 * edge2.z);
+
+        bitangent.x = f * (-delta_u2 * edge1.x + delta_u1 * edge2.x);
+        bitangent.y = f * (-delta_u2 * edge1.y + delta_u1 * edge2.y);
+        bitangent.z = f * (-delta_u2 * edge1.z + delta_u1 * edge2.z);
+
+        v0.tangent = tangent;
+        v1.tangent = tangent;
+        v2.tangent = tangent;
+        v0.bitangent = bitangent;
+        v1.bitangent = bitangent;
+        v2.bitangent = bitangent;
+    }
+
     mesh_data = std::make_shared<::mesh>(real_vertices, loader.LoadedIndices);
     vertex_count = real_vertices.size();
 }
