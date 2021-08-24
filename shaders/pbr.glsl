@@ -30,7 +30,7 @@ void main()
     vec3 T = normalize(vec3(u_model * vec4(in_tangent, 0.0)));
     vec3 B = normalize(vec3(u_model * vec4(in_bitangent, 0.0)));
     vec3 N = normalize(vec3(u_model * vec4(in_normal, 0.0)));
-    v_TBN = mat3(T, B, N);
+    v_TBN = transpose(mat3(T, B, N));
 
     gl_Position = u_proj * u_view * u_model * vec4(in_position, 1.0);
 }
@@ -100,9 +100,8 @@ float geometry_smith(vec3 N, vec3 V, vec3 L, float k)
 
 vec3 calculate_normal_in_world_space(mat3 TBN, vec3 normal_texture) {
     vec3 remapped_normal = normal_texture * 2.0 - 1.0;
-    mat3 inv_TBN = transpose(TBN);
 
-    return normalize(inv_TBN * normal_texture);
+    return normalize(transpose(v_TBN) * normal_texture);
 }
 
 void main()
@@ -140,7 +139,6 @@ void main()
     // as both specular and diffuse can't exceed 1 (unless light sources, they can exceed 1)
     float specular_fraction = fresnel_distribution;
     float diffuse_fraction = 1 - specular_fraction;
-
 
     // Calculate how much the fragment will be affected by the directional light.
     float radiance = max(dot(N, L) * light_intensity, 0.0);
