@@ -21,7 +21,5 @@ mesh::mesh(const std::vector<vertex>& vertices, const std::vector<unsigned int>&
         {3, GL_FLOAT}, // Positions
         {3, GL_FLOAT}, // Normals
         {2, GL_FLOAT}, // Texture coordinates
-        {3, GL_FLOAT}, // Tangent
-        {3, GL_FLOAT}  // Bitangent
     });
 }
