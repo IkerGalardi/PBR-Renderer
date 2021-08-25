@@ -4,8 +4,6 @@
 layout (location = 0) in vec3 in_position;
 layout (location = 1) in vec3 in_normal;
 layout (location = 2) in vec2 in_texture_coords;
-layout (location = 3) in vec3 in_tangent;
-layout (location = 4) in vec3 in_bitangent;
 
 uniform mat4 u_proj;
 uniform mat4 u_view;
@@ -14,7 +12,6 @@ uniform mat4 u_model;
 out vec3 v_normal;
 out vec2 v_texture_coordinates;
 out vec3 v_fragment_position;
-out mat3 v_TBN;
 
 void main()
 {
@@ -25,12 +22,6 @@ void main()
     // Position of fragment (pixel) on world space. This is going to be used to
     // calculate the specular part of phong shading.
     v_fragment_position = vec3(u_model * vec4(in_position, 1.0));
-
-    // Create the tangent space transformation matrix
-    vec3 T = normalize(vec3(u_model * vec4(in_tangent, 0.0)));
-    vec3 B = normalize(vec3(u_model * vec4(in_bitangent, 0.0)));
-    vec3 N = normalize(vec3(u_model * vec4(in_normal, 0.0)));
-    v_TBN = transpose(mat3(T, B, N));
 
     gl_Position = u_proj * u_view * u_model * vec4(in_position, 1.0);
 }
@@ -43,7 +34,6 @@ const float PI = 3.1415926535897932384626433832795;
 in vec3 v_normal;
 in vec2 v_texture_coordinates;
 in vec3 v_fragment_position;
-in mat3 v_TBN;
 
 uniform vec3 u_camera_position;
 
@@ -98,7 +88,7 @@ float geometry_smith(vec3 N, vec3 V, vec3 L, float k)
     return ggx1 * ggx2;
 }
 
-vec3 calculate_normal_in_world_space(mat3 TBN, vec3 normal_texture) {
+vec3 calculate_normal_in_world_space(vec3 normal_texture) {
     vec3 texture_normalized = normal_texture * 2.0 - 1.0;
 
     vec3 Q1  = dFdx(v_fragment_position);
@@ -120,7 +110,7 @@ void main()
     vec3 base_color = pow(texture(diffuse_texture, v_texture_coordinates).xyz, vec3(2.2));
     float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
     vec3 normal_in_tangent_space = texture(normal_texture, v_texture_coordinates).xyz;
-    vec3 normal_vector = calculate_normal_in_world_space(v_TBN, normal_in_tangent_space);
+    vec3 normal_vector = calculate_normal_in_world_space(normal_in_tangent_space);
 
     // Remapping of variables taken from Unreal Engine. (See Unreal Engine 4 shading documentation from Epic)
     float alpha = roughness_value * roughness_value;
