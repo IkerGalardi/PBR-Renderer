@@ -23,7 +23,7 @@ platform::~platform() {
 
 
 SDL_Window* platform::create_window(unsigned int width, unsigned int height, const std::string& title) {
-    this->window = SDL_CreateWindow("Vulkan Engine",
+    this->window = SDL_CreateWindow(title.c_str(),
 		                            SDL_WINDOWPOS_UNDEFINED,
 		                            SDL_WINDOWPOS_UNDEFINED,
 		                            width,

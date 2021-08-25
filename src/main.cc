@@ -11,7 +11,7 @@
 #include "renderer/model.hh"
 
 int main(int argc, char** argv) {
-    auto* window = platform::get().create_window(2000, 2000, "test");
+    auto* window = platform::get().create_window(2000, 2000, "OpenGL engine");
 
     spdlog::set_level(spdlog::level::info);
 
