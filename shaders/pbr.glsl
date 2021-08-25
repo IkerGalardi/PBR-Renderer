@@ -99,6 +99,8 @@ float geometry_smith(vec3 N, vec3 V, vec3 L, float k)
 }
 
 vec3 calculate_normal_in_world_space(mat3 TBN, vec3 normal_texture) {
+    vec3 texture_normalized = normal_texture * 2.0 - 1.0;
+
     vec3 Q1  = dFdx(v_fragment_position);
     vec3 Q2  = dFdy(v_fragment_position);
     vec2 st1 = dFdx(v_texture_coordinates);
@@ -109,7 +111,7 @@ vec3 calculate_normal_in_world_space(mat3 TBN, vec3 normal_texture) {
     vec3 B  = -normalize(cross(N, T));
     mat3 tbn = mat3(T, B, N);
 
-    return tbn * normal_texture;
+    return tbn * texture_normalized;
 }
 
 void main()
@@ -160,5 +162,5 @@ void main()
     // For more information see https://learnopengl.com/Advanced-Lighting/Gamma-Correction
     vec3 gamma_corrected = pow(final_lit, vec3(1.0 / 2.2));
 
-    out_color = vec4(normal_vector, 1.0);
+    out_color = vec4(gamma_corrected, 1.0);
 }
