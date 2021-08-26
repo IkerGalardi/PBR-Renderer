@@ -88,19 +88,36 @@ float geometry_smith(vec3 N, vec3 V, vec3 L, float k)
     return ggx1 * ggx2;
 }
 
+vec3 calculate_normal_in_world_space(vec3 normal_texture) {
+    vec3 texture_normalized = normal_texture * 2.0 - 1.0;
+
+    vec3 Q1  = dFdx(v_fragment_position);
+    vec3 Q2  = dFdy(v_fragment_position);
+    vec2 st1 = dFdx(v_texture_coordinates);
+    vec2 st2 = dFdy(v_texture_coordinates);
+
+    vec3 N   = normalize(v_normal);
+    vec3 T  = normalize(Q1 * st2.t - Q2 * st1.t);
+    vec3 B  = -normalize(cross(N, T));
+    mat3 tbn = mat3(T, B, N);
+
+    return tbn * texture_normalized;
+}
+
 void main()
 {
     // Gather from the textures all the necessary values
     vec3 base_color = pow(texture(diffuse_texture, v_texture_coordinates).xyz, vec3(2.2));
     float roughness_value = texture(diffuse_texture, v_texture_coordinates).x;
-    vec3 normal_vector = texture(normal_texture, v_texture_coordinates).xyz;
+    vec3 normal_in_tangent_space = texture(normal_texture, v_texture_coordinates).xyz;
+    vec3 normal_vector = calculate_normal_in_world_space(normal_in_tangent_space);
 
     // Remapping of variables taken from Unreal Engine. (See Unreal Engine 4 shading documentation from Epic)
     float alpha = roughness_value * roughness_value;
     float k = pow((roughness_value + 1), 2) / 8;
 
     // Typical variables used when shading
-    vec3 N = normalize(v_normal);
+    vec3 N = normalize(normal_vector);
     vec3 V = normalize(u_camera_position - v_fragment_position);
     vec3 L = normalize(light_direction);
     vec3 H = normalize(V + L);
@@ -122,7 +139,6 @@ void main()
     // as both specular and diffuse can't exceed 1 (unless light sources, they can exceed 1)
     float specular_fraction = fresnel_distribution;
     float diffuse_fraction = 1 - specular_fraction;
-
 
     // Calculate how much the fragment will be affected by the directional light.
     float radiance = max(dot(N, L) * light_intensity, 0.0);
