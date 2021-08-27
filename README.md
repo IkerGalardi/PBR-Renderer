@@ -6,6 +6,7 @@ Sinple PBR renderer for learning purposes.
 ## Features
 * Physically based Rendering with Cook-Torrance BRDF
 * Normal Mapping
+
 ## Build instructions
 If you want to simply build and test the project type the next command and that should be it!
 ``` bash
@@ -18,5 +19,9 @@ premake5 gmake2
 make clean && make
 ./bin/pbr
 ```
+
 ## Known issues
 * Nvidia users, im sorry! For reasons I don't really know, GLEW (the OpenGL loader) does not find any OpenGL version on the system. 
+
+## References
+* Great shout-out to the pages [learnopengl](https://learnopengl.com/) and [opengl-tutorial](http://www.opengl-tutorial.org/) for the great PBR theory and OpenGL tutorials.
