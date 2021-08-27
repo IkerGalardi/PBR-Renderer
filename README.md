@@ -1,7 +1,7 @@
 # PBR-Renderer
 Sinple PBR renderer for learning purposes. 
 
-[!Tile render](https://github.com/IkerGalardi/PBR-Renderer/blob/doc/doc/res/tiles_render.png?raw=true)
+[!Tile render](https://raw.githubusercontent.com/IkerGalardi/PBR-Renderer/doc/doc/res/tiles_render.png)
 
 ## Features
 * Physically based Rendering with Cook-Torrance BRDF
