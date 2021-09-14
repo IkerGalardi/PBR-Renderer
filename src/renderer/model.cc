@@ -2,9 +2,6 @@
 
 #include <memory>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 #include <spdlog/spdlog.h>
 #include <objloader/OBJ_Loader.h>
 
