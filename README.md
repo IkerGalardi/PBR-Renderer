@@ -8,6 +8,10 @@ Sinple PBR renderer for learning purposes.
 * Normal Mapping
 
 ## Build instructions
+First of all, the next dependencies need to be installed:
+* GLEW
+* SDL2
+
 If you want to simply build and test the project type the next command and that should be it!
 ``` bash
 make
