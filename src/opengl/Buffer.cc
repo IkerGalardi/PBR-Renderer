@@ -32,6 +32,13 @@ namespace GL
         glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_COPY_WRITE_BUFFER, 0, 0, BufferSize);
     }
 
+    Buffer::Buffer(const Buffer&& other) {
+        BufferID = other.BufferID;
+        BufferType = BufferType;
+        DrawType = other.DrawType;
+        BufferSize = other.BufferSize;
+    }
+
     Buffer::~Buffer()
     {
         glDeleteBuffers(1, &BufferID);

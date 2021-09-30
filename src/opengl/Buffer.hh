@@ -8,6 +8,7 @@ namespace GL
         Buffer(unsigned int bufferType, void* buffer, unsigned int bufferSize, unsigned int drawType);
         Buffer(unsigned int bufferType, unsigned int drawType);
         Buffer(const Buffer& other);
+        Buffer(const Buffer&& other);
         ~Buffer();
 
         void Bind();
