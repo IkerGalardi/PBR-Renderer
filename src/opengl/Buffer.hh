@@ -7,6 +7,8 @@ namespace GL
     public:
         Buffer(unsigned int bufferType, void* buffer, unsigned int bufferSize, unsigned int drawType);
         Buffer(unsigned int bufferType, unsigned int drawType);
+        Buffer(const Buffer& other);
+        Buffer(const Buffer&& other);
         ~Buffer();
 
         void Bind();
@@ -18,6 +20,7 @@ namespace GL
         unsigned int BufferID;
         unsigned int BufferType;
         unsigned int DrawType;
+        unsigned int BufferSize;
     protected:
     };
 }
