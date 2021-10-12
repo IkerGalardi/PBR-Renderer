@@ -25,7 +25,7 @@ make clean && make
 ```
 
 ## Known issues
-* Nvidia users, im sorry! For reasons I don't really know, GLEW (the OpenGL loader) does not find any OpenGL version on the system. 
+To check all the known issues go to the `issues` tab on the github repository.
 
 ## References
 * Great shout-out to the pages [learnopengl](https://learnopengl.com/) and [opengl-tutorial](http://www.opengl-tutorial.org/) for the great PBR theory and OpenGL tutorials.
