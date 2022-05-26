@@ -25,7 +25,9 @@ make clean && make
 ```
 
 ## Known issues
-To check all the known issues go to the `issues` tab on the github repository.
+The next are already known issues and ways to fix them, for more information check the *issues* page on github.
+
+* GLEW initialization failure: for wayland users, you will se a warning saying that will ignore a initialization error. All should work fine from that point on, but if you want to remove the warning, execute the app with the next command `SDL_VIDEODRIVER=X11 ./bin/pbr`
 
 ## References
 * Great shout-out to the pages [learnopengl](https://learnopengl.com/) and [opengl-tutorial](http://www.opengl-tutorial.org/) for the great PBR theory and OpenGL tutorials.
