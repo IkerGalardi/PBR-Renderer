@@ -63,15 +63,21 @@ namespace renderer {
         SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE,32);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE,16);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER,1);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);        
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
         SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
         // Create the OpenGL context and make it current
         opengl_context = SDL_GL_CreateContext(window);
-        SDL_GL_MakeCurrent(window, opengl_context);
+        if(opengl_context == NULL) {
+            spdlog::error("SDL: error while creating the OpenGL context: {}", SDL_GetError());
+            std::exit(1);
+        }
+        auto makecurrent_err = SDL_GL_MakeCurrent(window, opengl_context);
+        if(makecurrent_err != 0) {
+            spdlog::error("SDL: error while making the context current: {}", SDL_GetError());
+            std::exit(1);
+        }
 
         spdlog::info("Renderer: OpenGL context created");
 
@@ -79,11 +85,19 @@ namespace renderer {
         SDL_GL_SetSwapInterval(0);
 
         // Initialize glew, don't ask why use glew experimental
-        glewExperimental = true;
+        glewExperimental = false;
         auto init_status = glewInit();
         if(init_status != GLEW_OK) {
-            spdlog::error("OpenGL: glew failed with error code {} on initialization", init_status);
-            std::exit(2);
+            if(init_status > 3) {
+                spdlog::warn("OpenGL: ingoring glew initialization strange failure ({}: {})", 
+                             init_status, 
+                             glewGetErrorString(init_status));
+            }else {
+                spdlog::error("OpenGL: glew failed with error code {}: {}", init_status, glewGetErrorString(init_status));
+                std::exit(2);
+            }
+
+
         }
 
         spdlog::info("Renderer: OpenGL initialized");
